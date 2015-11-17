@@ -11,6 +11,16 @@ public class Node {
     private int leftChild;
     private int rightChild;
 
+    @Override
+    public String toString() {
+        String pTest = "no";
+        if(parentsTest){
+            pTest = "yes";
+        }
+        return id + " " + pTest + " " + testAttrib +
+                " " + leftChild + " " + rightChild + "/r/n";
+    }
+
     public int getId() {
         return id;
     }
