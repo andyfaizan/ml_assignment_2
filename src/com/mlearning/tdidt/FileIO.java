@@ -1,6 +1,7 @@
 package com.mlearning.tdidt;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,7 @@ public class FileIO {
     /*
     Untested function
      */
-    public void writeFile(Node[] nodes, String outFilePath) {
+    public void writeFile(ArrayList<Node> nodes, String outFilePath) {
 
         try {
             File outFile = new File(outFilePath);
