@@ -14,6 +14,7 @@ public class FileIO {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
             String currentLine;
             values = new ArrayList<ArrayList<Integer>>();
+            // TODO: The first line is expected to have the number of attributes per class
             while ((currentLine = bufferedReader.readLine()) != null) {
                 String[] stringValues = currentLine.split(",");
                 ArrayList list = new ArrayList<Integer>();

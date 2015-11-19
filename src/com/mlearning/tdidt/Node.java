@@ -10,6 +10,8 @@ public class Node {
     private int testAttrib;
     private int leftChild;
     private int rightChild;
+    private boolean isLeafNode;
+    private int leafClass;
 
     @Override
     public String toString() {
@@ -59,5 +61,23 @@ public class Node {
 
     public void setRightChild(int rightChild) {
         this.rightChild = rightChild;
+    }
+
+    public boolean isLeafNode() {
+        return isLeafNode;
+    }
+
+    public void setLeafNode(boolean leafNode) {
+        isLeafNode = leafNode;
+    }
+
+    public int getLeafClass() {
+        // TODO: throw proper error if not a leaf node
+        return leafClass;
+    }
+
+    public void setLeafClass(int leafClass) {
+        // TODO: throw proper error if not a leaf node
+        this.leafClass = leafClass;
     }
 }

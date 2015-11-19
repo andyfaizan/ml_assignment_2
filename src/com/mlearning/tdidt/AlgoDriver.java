@@ -14,11 +14,89 @@ public class AlgoDriver {
         this.values = values;
     }
 
-    public ArrayList<Node> TDIDT(ArrayList<ArrayList<Integer>> examples, ArrayList<Integer> attribs,
-                                 ArrayList<Node> tree, Node node) {
+    public ArrayList<Node> TDIDT(ArrayList<ArrayList<Integer>> examples, ArrayList<Integer> attribs) {
 
-        //TODO the algorithm LOL
+        ArrayList<Node> tree = new ArrayList<Node>();
+        Node rootNode = new Node();
+        rootNode.setId(0);
+
+        tree = TDIDT__(examples, attribs, rootNode, tree);
+
         return tree;
+    }
+
+    private ArrayList<Node> TDIDT__(ArrayList<ArrayList<Integer>> S, ArrayList<Integer> attribsToCheck,
+                                     Node nodeToCheckFor, ArrayList<Node> tree) {
+        // TODO: raise error if S is empty, shouldn't happen BTW
+
+        // Check if all classes are the same
+        ArrayList<Integer> classesList = getAllValuesFori(S, 0);
+
+        if (allValuesSame(classesList)) {
+            nodeToCheckFor.setLeafNode(true);
+            nodeToCheckFor.setLeafClass(classesList.get(0));
+            tree.add(nodeToCheckFor);
+            return tree;
+        }
+
+        // Check if any attribute splits data
+        boolean splitAvailable = false;
+        for (int a = 0; a < attribsToCheck.size(); a++) {
+            int attribID = attribsToCheck.get(a);
+            if (!allValuesSame(getAllValuesFori(S, attribID))) {
+                splitAvailable = true;
+                break;
+            }
+        }
+
+        if (!splitAvailable) {
+            nodeToCheckFor.setLeafNode(true);
+            int poscount = 0;
+            int negcount = 0;
+            for (int i = 0; i < S.size(); i++) {
+                if (S.get(i) == 1) {
+                    poscount++;
+                } else {
+                    negcount++;
+                }
+            }
+
+            if poscount >= negcount {
+                nodeToCheckFor.setLeafClass(1);
+            } else {
+                nodeToCheckFor.setLeafClass(0);
+            }
+
+            tree.add(nodeToCheckFor);
+            return tree;
+        }
+
+        // select the best test for the node based on information gain for attrib
+
+
+        // append the node to the tree before returning
+        tree.add(nodeToCheckFor);
+        return tree;
+    }
+
+    private ArrayList<Integer> getAllValuesFori(ArrayList<ArrayList<Integer>> S, int i) {
+        ArrayList<Integer> values = new ArrayList<Integer>();
+        for (int j = 0; j < S.size(); j++) {
+            values.add(S.get(j).get(i));
+        }
+
+        return values
+    }
+
+    private boolean allValuesSame(ArrayList<Integer> L) {
+        int val0 = L.get(0);
+        for (int j = 1; j < L.size(); j++) {
+            if (L.get(j) != val0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private double getEntropy(ArrayList<Integer> S) {
