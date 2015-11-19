@@ -80,4 +80,12 @@ public class Node {
         // TODO: throw proper error if not a leaf node
         this.leafClass = leafClass;
     }
+
+    public void setChildForValue(int childId, boolean test) {
+        if (test) {
+            setRightChild(childId);
+        } else {
+            setLeftChild(childId);
+        }
+    }
 }
