@@ -20,7 +20,7 @@ public class Node {
             pTest = "yes";
         }
         return id + " " + pTest + " " + testAttrib +
-                " " + leftChild + " " + rightChild + "/r/n";
+                " " + leftChild + " " + rightChild + "";
     }
 
     public int getId() {

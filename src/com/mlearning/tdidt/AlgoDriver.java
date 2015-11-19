@@ -9,6 +9,12 @@ public class AlgoDriver {
 
     private ArrayList<Node> tree;
     private ArrayList<ArrayList<Integer>> values;
+    private int maxNodeId = -1;
+
+    private int getNodeId() {
+        maxNodeId++;
+        return maxNodeId;
+    }
 
     public AlgoDriver(ArrayList<ArrayList<Integer>> values) {
         this.values = values;
@@ -16,7 +22,7 @@ public class AlgoDriver {
 
     public ArrayList<Node> solveAndGetTree() {
         ArrayList<Integer> attribs = new ArrayList<Integer>();
-        for (int a = 0; a < values.get(0).size() - 1; a++) {
+        for (int a = 1; a < values.get(0).size(); a++) {
             attribs.add(a);
         }
 
@@ -29,7 +35,7 @@ public class AlgoDriver {
 
         ArrayList<Node> tree = new ArrayList<Node>();
         Node rootNode = new Node();
-        rootNode.setId(0);
+        rootNode.setId(this.getNodeId());
 
         tree = TDIDT__(examples, attribs, rootNode, tree);
 
@@ -92,8 +98,8 @@ public class AlgoDriver {
             }
         }
 
-        int currMaxNodeID = nodeToCheckFor.getId();
         nodeToCheckFor.setLeafNode(false);
+        nodeToCheckFor.setTestAttrib(bestAttribID);
 
         ArrayList<Node> childNodes = new ArrayList<Node>();
         ArrayList<ArrayList<ArrayList<Integer>>> subLists = new ArrayList<ArrayList<ArrayList<Integer>>>();
@@ -101,10 +107,8 @@ public class AlgoDriver {
             ArrayList<ArrayList<Integer>> subList = getSublistForAttribValue(S, bestAttribID, v);
             if (subList.size() > 0) {  // I have no Idea why I am checking this but it may break things
                 Node childNode = new Node();
-                currMaxNodeID++;
-                childNode.setId(currMaxNodeID);
+                childNode.setId(getNodeId());
                 childNode.setParentsTest(v == 1);
-                childNode.setTestAttrib(bestAttribID);
 
                 nodeToCheckFor.setChildForValue(childNode.getId(), childNode.isParentsTest());
                 childNodes.add(childNode);
@@ -136,20 +140,14 @@ public class AlgoDriver {
 
     private int getAttribWithMaxInfoGain(ArrayList<ArrayList<Integer>> S, ArrayList<Integer> attribsToCheck) {
         int bestAttrib = -1;
-        double bestInfoGain = 0.0;
+        double bestInfoGain = -1.0;
 
-        ArrayList<Integer> classLabels = new ArrayList<>();
-        for (int i = 0; i < S.size(); i++) {
-            classLabels.add(S.get(i).get(0));
-        }
+        ArrayList<Integer> classLabels = getAllValuesFori(S, 0);
         double baseEntropy = getEntropy(classLabels);
 
         for (int a = 0; a < attribsToCheck.size(); a++) {
             double infoGain = getInformationGainForAttrib(S, attribsToCheck.get(a), baseEntropy);
             if (infoGain > bestInfoGain) {
-                bestInfoGain = infoGain;
-                bestAttrib = attribsToCheck.get(a);
-            } else if (bestInfoGain + infoGain == 0.0) {  // info gain always >= 0
                 bestInfoGain = infoGain;
                 bestAttrib = attribsToCheck.get(a);
             }
@@ -232,11 +230,11 @@ public class AlgoDriver {
     public static void main(String[] args) {
         FileIO fileIO = new FileIO();
 
-        if (args.length < 2) {
-            System.err.println("Not enough arguments provided");
-            System.exit(0);
-        }
-        ArrayList<ArrayList<Integer>> values = fileIO.readFile(args[0]);
+//        if (args.length < 2) {
+//            System.err.println("Not enough arguments provided");
+//            System.exit(0);
+//        }
+        ArrayList<ArrayList<Integer>> values = fileIO.readFile("./data/xor.txt");
         AlgoDriver driver = new AlgoDriver(values);
         ArrayList<Node> solutionTree = driver.solveAndGetTree();
 
