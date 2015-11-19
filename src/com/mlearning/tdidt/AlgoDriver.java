@@ -199,7 +199,7 @@ public class AlgoDriver {
 
     // This function needs refactoring
     // Also, value does not need to be passed for boolean attribs
-    //      working around for now
+    //      working around for now. DON'T CHANGE BEFORE INFORMING
     private double getInformationGain(ArrayList<Integer> S, int attribute, int value) {
         double lCount = 0;
         double hCount = 0;
