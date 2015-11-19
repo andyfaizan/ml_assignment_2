@@ -1,33 +1,37 @@
 package com.mlearning.tdidt;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by andyfaizan on 17/11/15.
+ *
  */
 public class FileIO {
 
-    public ArrayList<ArrayList<Integer>> readFile(String filePath) {
-        ArrayList<ArrayList<Integer>> values = null;
+    public ArrayList<Example> readFile(String filePath) {
+        ArrayList<Example> examples = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
             String currentLine;
-            values = new ArrayList<ArrayList<Integer>>();
             // TODO: The first line is expected to have the number of attributes per class
+            int nAttributes = -1;
             while ((currentLine = bufferedReader.readLine()) != null) {
-                String[] stringValues = currentLine.split(",");
-                ArrayList list = new ArrayList<Integer>();
-                for (String element : stringValues) {
-                    list.add(Integer.parseInt(element));
+                if (nAttributes < 0) {
+                    nAttributes = Integer.parseInt(currentLine);
+                } else {
+                    String[] stringValues = currentLine.split(",");
+                    ArrayList<Boolean> list = new ArrayList<>();
+                    for (String element : stringValues) {
+                        list.add(Integer.parseInt(element) > 0);
+                    }
+                    examples.add(new Example(list, nAttributes));
                 }
-                values.add(list);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return values;
+        return examples;
     }
 
     /*
@@ -59,12 +63,10 @@ public class FileIO {
      */
     public static void main(String[] args) {
         FileIO fileIO = new FileIO();
-        ArrayList<ArrayList<Integer>> values = fileIO.readFile("/home/andyfaizan/Downloads/SPECT/SPECT.train");
-        for (ArrayList<Integer> list : values) {
-            for (Integer ele : list) {
-                System.out.print(ele);
-            }
-            System.out.println();
+        ArrayList<Example> values = fileIO.readFile("./data/xor.txt");
+        for (Example e : values) {
+            System.out.print(e.toString());
         }
+        System.out.println();
     }
 }

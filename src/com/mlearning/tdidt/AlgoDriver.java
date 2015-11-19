@@ -234,12 +234,12 @@ public class AlgoDriver {
 //            System.err.println("Not enough arguments provided");
 //            System.exit(0);
 //        }
-        ArrayList<ArrayList<Integer>> values = fileIO.readFile("./data/xor.txt");
-        AlgoDriver driver = new AlgoDriver(values);
-        ArrayList<Node> solutionTree = driver.solveAndGetTree();
-
-        for(int n = 0; n < solutionTree.size(); n++) {
-             System.out.println(solutionTree.get(n).toString());
-        }
+//        ArrayList<ArrayList<Integer>> values = fileIO.readFile("./data/xor.txt");
+//        AlgoDriver driver = new AlgoDriver(values);
+//        ArrayList<Node> solutionTree = driver.solveAndGetTree();
+//
+//        for(int n = 0; n < solutionTree.size(); n++) {
+//             System.out.println(solutionTree.get(n).toString());
+//        }
     }
 }
