@@ -16,7 +16,7 @@ public class AlgoDriver {
 
     public ArrayList<Node> solveAndGetTree() {
         ArrayList<Integer> attribs = new ArrayList<Integer>();
-        for (int a = 0; a < values.get(0).size() - 1) {
+        for (int a = 0; a < values.get(0).size() - 1; a++) {
             attribs.add(a);
         }
 
@@ -65,14 +65,14 @@ public class AlgoDriver {
             int poscount = 0;
             int negcount = 0;
             for (int i = 0; i < S.size(); i++) {
-                if (S.get(i) == 1) {
+                if (S.get(i).get(0) == 1) {
                     poscount++;
                 } else {
                     negcount++;
                 }
             }
 
-            if poscount >= negcount {
+            if (poscount >= negcount) {
                 nodeToCheckFor.setLeafClass(1);
             } else {
                 nodeToCheckFor.setLeafClass(0);
@@ -88,7 +88,7 @@ public class AlgoDriver {
         ArrayList<Integer> newAttribsToCheck = new ArrayList<Integer>();
         for (int a = 0; a < attribsToCheck.size(); a++) {
             if (attribsToCheck.get(a) != bestAttribID) {
-                newAttribsToCheck.add(attribsToCheck.get(a))
+                newAttribsToCheck.add(attribsToCheck.get(a));
             }
         }
 
@@ -96,6 +96,7 @@ public class AlgoDriver {
         nodeToCheckFor.setLeafNode(false);
 
         ArrayList<Node> childNodes = new ArrayList<Node>();
+        ArrayList<ArrayList<ArrayList<Integer>>> subLists = new ArrayList<ArrayList<ArrayList<Integer>>>();
         for (int v = 0; v < 2; v++) {  // binary attrib
             ArrayList<ArrayList<Integer>> subList = getSublistForAttribValue(S, bestAttribID, v);
             if (subList.size() > 0) {  // I have no Idea why I am checking this but it may break things
@@ -107,12 +108,13 @@ public class AlgoDriver {
 
                 nodeToCheckFor.setChildForValue(childNode.getId(), childNode.isParentsTest());
                 childNodes.add(childNode);
+                subLists.add(subList);
             }
 
         }
 
         for (int c = 0; c < childNodes.size(); c++) {  // ;p
-            TDIDT__(subList, newAttribsToCheck, childNodes.get(c), tree);
+            TDIDT__(subLists.get(c), newAttribsToCheck, childNodes.get(c), tree);
         }
 
         tree.add(nodeToCheckFor);
@@ -132,13 +134,18 @@ public class AlgoDriver {
         return subList;
     }
 
-    private int getAttribWithMaxInfoGain(ArrayList<ArrayList<Integer>> S, ArraList<Integer> attribsToCheck) {
-        int bestAttrib;
+    private int getAttribWithMaxInfoGain(ArrayList<ArrayList<Integer>> S, ArrayList<Integer> attribsToCheck) {
+        int bestAttrib = -1;
         double bestInfoGain = 0.0;
 
-        int value = 1;  // work around
+        ArrayList<Integer> classLabels = new ArrayList<>();
+        for (int i = 0; i < S.size(); i++) {
+            classLabels.add(S.get(i).get(0));
+        }
+        double baseEntropy = getEntropy(classLabels);
+
         for (int a = 0; a < attribsToCheck.size(); a++) {
-            double infoGain = getInformationGain(S, attribsToCheck.get(a), value);
+            double infoGain = getInformationGainForAttrib(S, attribsToCheck.get(a), baseEntropy);
             if (infoGain > bestInfoGain) {
                 bestInfoGain = infoGain;
                 bestAttrib = attribsToCheck.get(a);
@@ -157,7 +164,7 @@ public class AlgoDriver {
             values.add(S.get(j).get(i));
         }
 
-        return values
+        return values;
     }
 
     private boolean allValuesSame(ArrayList<Integer> L) {
@@ -169,6 +176,31 @@ public class AlgoDriver {
         }
 
         return true;
+    }
+
+    private double getInformationGainForAttrib(ArrayList<ArrayList<Integer>> S, int attrbID, double baseEntropy) {
+        int posCount = 0;
+        int negCount = 0;
+
+        ArrayList<Integer> posClasses = new ArrayList<Integer>();
+        ArrayList<Integer> negClasses = new ArrayList<Integer>();
+
+
+        for (int i = 0; i < S.size(); i++) {
+            if (S.get(i).get(attrbID) == 1) {
+                posClasses.add(S.get(i).get(0));
+                posCount++;
+            } else {
+                negClasses.add(S.get(i).get(0));
+                negCount++;
+            }
+        }
+
+        int totalCount = posCount + negCount;
+        double posProb = (double) posCount / totalCount;
+        double negProb = (double) negCount / totalCount;
+
+        return baseEntropy - (posProb * getEntropy(posClasses) + negProb * getEntropy(negClasses));
     }
 
     private double getEntropy(ArrayList<Integer> S) {
@@ -197,44 +229,9 @@ public class AlgoDriver {
         return Math.log(arg) / Math.log(2);
     }
 
-    // This function needs refactoring
-    // Also, value does not need to be passed for boolean attribs
-    //      working around for now. DON'T CHANGE BEFORE INFORMING
-    private double getInformationGain(ArrayList<Integer> S, int attribute, int value) {
-        double lCount = 0;
-        double hCount = 0;
-        ArrayList<Integer> lowerS = new ArrayList<Integer>();
-        ArrayList<Integer> higherS = new ArrayList<Integer>();
-
-        int n = S.size();
-        for (int i = 0; i < n; i++) {
-            if (S.get(i) <= value) {
-                //System.out.println("Lower add");
-                lCount++;
-                lowerS.add(S.get(i));
-            } else {
-                //System.out.println("Upper add");
-                hCount++;
-                higherS.add(S.get(i));
-            }
-        }
-
-        double count = lCount + hCount;
-        double lProb = lCount / count;
-        double hProb = hCount / count;
-
-        double entropyHigher = getEntropy(higherS);
-        double entropyLower = getEntropy(lowerS);
-
-        double entropyInitial = getEntropy(S);
-        double entropyChange = lProb * entropyLower + hProb * entropyHigher;
-
-        return entropyInitial - entropyChange;
-
-    }
-
     public static void main(String[] args) {
         FileIO fileIO = new FileIO();
+
         if (args.length < 2) {
             System.err.println("Not enough arguments provided");
             System.exit(0);
@@ -244,7 +241,7 @@ public class AlgoDriver {
         ArrayList<Node> solutionTree = driver.solveAndGetTree();
 
         for(int n = 0; n < solutionTree.size(); n++) {
-            // print solutionTree.get(n).toString()
+             System.out.println(solutionTree.get(n).toString());
         }
     }
 }
