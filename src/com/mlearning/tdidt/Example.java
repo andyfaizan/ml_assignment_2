@@ -38,6 +38,10 @@ public class Example {
         return nAttributes;
     }
 
+    public boolean getValForAttribute(int a) {
+        return attributes.get(a);
+    }
+
     @Override
     public String toString() {
         String s = "";
