@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 class FileIO {
 
-    public ArrayList<Example> readFile(String filePath) {
-        ArrayList<Example> examples = new ArrayList<>();
+    public Examples readFile(String filePath) {
+        Examples examples = new Examples();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
             String currentLine;
             // TODO: The first line is expected to have the number of attributes per class
@@ -63,8 +63,8 @@ class FileIO {
      */
     public static void main(String[] args) {
         FileIO fileIO = new FileIO();
-        ArrayList<Example> values = fileIO.readFile("./data/xor.txt");
-        for (Example e : values) {
+        Examples values = fileIO.readFile("./data/xor.txt");
+        for (Example e : values.getExamplesList()) {
             System.out.print(e.toString());
         }
         System.out.println();

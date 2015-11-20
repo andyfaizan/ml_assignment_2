@@ -1,6 +1,5 @@
 package com.mlearning.tdidt;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -8,11 +7,11 @@ import java.util.ArrayList;
  *
  */
 class BinaryDTBuilder {
-    private final ArrayList<Example> examples;
+    private final Examples examples;
     private ArrayList<Node> tree;
     private int maxNodeId = -1;
 
-    private BinaryDTBuilder(ArrayList<Example> examples) {
+    private BinaryDTBuilder(Examples examples) {
         this.examples = examples;
     }
 
@@ -43,9 +42,9 @@ class BinaryDTBuilder {
         TDIDT(examples, attributes, rootNode);
     }
 
-    private void TDIDT(ArrayList<Example> examples, ArrayList<Integer> attributesToCheck, Node nodeToCheckFor) {
+    private void TDIDT(Examples examples, ArrayList<Integer> attributesToCheck, Node nodeToCheckFor) {
         // Check if class labels are the same for the examples
-        ArrayList<Boolean> labelsList = getAllLabels(examples);
+        ArrayList<Boolean> labelsList = examples.getAllLabels();
         if(allValuesSame(labelsList)) {
             nodeToCheckFor.setAsLeaf();
             nodeToCheckFor.setLeafClass(labelsList.get(0));
@@ -55,7 +54,7 @@ class BinaryDTBuilder {
         // Check if any attribute splits data
         boolean splitAvailable = false;
         for (int a : attributesToCheck) {
-            if (!allValuesSame(getValsForAttrib(examples, a))) {
+            if (!allValuesSame(examples.getValsForAttrib(a))) {
                 splitAvailable = true;
                 break;
             }
@@ -103,7 +102,7 @@ class BinaryDTBuilder {
         possibleValues.add(true);
 
         for (boolean v : possibleValues) {
-            ArrayList<Example> examplesSubList = getSublistForAttribValue(examples, bestAttributeID, v);
+            Examples examplesSubList = examples.getSublistForAttribValue(bestAttributeID, v);
             if (examplesSubList.size() > 0) {
                 Node childNode = new Node();
                 childNode.setId(getNewNodeId());
@@ -118,7 +117,7 @@ class BinaryDTBuilder {
 
     }
 
-    private int getAttribWithMaxInfoGain(ArrayList<Example> examples, ArrayList<Integer> attribsToCheck) {
+    private int getAttribWithMaxInfoGain(Examples examples, ArrayList<Integer> attribsToCheck) {
         int bestAttribID = -1;
         double bestInfoGain = -1.0;
 
@@ -144,9 +143,9 @@ class BinaryDTBuilder {
         return bestAttribID;
     }
 
-    private double getInformationGainForAttrib(ArrayList<Example> examples, int attrib, double baseEntropy) {
-        ArrayList<Boolean> posValLabels = getAllLabels(getSublistForAttribValue(examples, attrib, true));
-        ArrayList<Boolean> negValLabels = getAllLabels(getSublistForAttribValue(examples, attrib, false));
+    private double getInformationGainForAttrib(Examples examples, int attrib, double baseEntropy) {
+        ArrayList<Boolean> posValLabels = examples.getSublistForAttribValue(attrib, true).getAllLabels();
+        ArrayList<Boolean> negValLabels = examples.getSublistForAttribValue(attrib, false).getAllLabels();
 
         int posCount = posValLabels.size();
         int negCount = negValLabels.size();
@@ -158,8 +157,8 @@ class BinaryDTBuilder {
         return baseEntropy - (posProb * getEntropy(posValLabels) + negProb * getEntropy(negValLabels));
     }
 
-    private double getBaseEntropy(ArrayList<Example> examples) {
-        ArrayList<Boolean> labelsList = getAllLabels(examples);
+    private double getBaseEntropy(Examples examples) {
+        ArrayList<Boolean> labelsList = examples.getAllLabels();
         return getEntropy(labelsList);
     }
 
@@ -183,17 +182,6 @@ class BinaryDTBuilder {
         }
     }
 
-    private ArrayList<Example> getSublistForAttribValue(ArrayList<Example> examples, int attribID, boolean value) {
-        ArrayList<Example> examplesSublist = new ArrayList<>();
-        for (Example e : examples) {
-            if(e.getValForAttribute(attribID) == value) {
-                examplesSublist.add(e);
-            }
-        }
-
-        return examplesSublist;
-    }
-
     private ArrayList<Integer> getPosNegCount(ArrayList<Boolean> boolsList) {
         int posCount = 0;
         int negCount = 0;
@@ -212,15 +200,6 @@ class BinaryDTBuilder {
         return countsPosNeg;
     }
 
-    private ArrayList<Boolean> getValsForAttrib(ArrayList<Example> examples, int attribID) {
-        ArrayList<Boolean> valsList = new ArrayList<>();
-        for (Example e: examples) {
-            valsList.add(e.getValForAttribute(attribID));
-        }
-
-        return valsList;
-    }
-
     private boolean allValuesSame(ArrayList<Boolean> arrayList) {
         boolean val0 = arrayList.get(0);
         for (boolean v : arrayList) {
@@ -230,21 +209,11 @@ class BinaryDTBuilder {
         return true;
     }
 
-    private ArrayList<Boolean> getAllLabels(ArrayList<Example> examples) {
-        ArrayList<Boolean> labelsList = new ArrayList<>();
-
-        for (Example e : examples) {
-            labelsList.add(e.isLabel());
-        }
-
-        return labelsList;
-    }
-
     public static void main(String[] args) {
         FileIO fileIO = new FileIO();
 
         // TODO: Check args and get filename
-        ArrayList<Example> examples = fileIO.readFile("./data/xor.txt");
+        Examples examples = fileIO.readFile("./data/xor.txt");
         BinaryDTBuilder bdtb = new BinaryDTBuilder(examples);
         ArrayList<Node> tree = bdtb.buildAndGetTree();
 
