@@ -1,5 +1,6 @@
 package com.mlearning.tdidt;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -73,7 +74,19 @@ class BinaryDTBuilder {
         }
 
         // select best attribute to test for the node based on Information Gain
-        int bestAttributeID = getAttribWithMaxInfoGain(examples, attributesToCheck);
+
+
+        int bestAttributeID;
+        if (attributesToCheck.size() == 1) {
+            bestAttributeID = attributesToCheck.get(0);
+            System.out.println("//////// Choosing the only attribute left : " + bestAttributeID + " for node " + nodeToCheckFor.getId());
+            System.out.println();
+        } else {
+            System.out.println("//////// Information Gain Calculations for Node " + nodeToCheckFor.getId());
+            bestAttributeID = getAttribWithMaxInfoGain(examples, attributesToCheck);
+            System.out.println("Chosen attribute " + bestAttributeID + " for node " + nodeToCheckFor.getId());
+            System.out.println();
+        }
 
         // remove this attribute for next recursion
         ArrayList<Integer> newAttributesToCheck = new ArrayList<>();
@@ -111,13 +124,22 @@ class BinaryDTBuilder {
 
         double baseEntropy = getBaseEntropy(examples);
 
+        System.out.println();
+        System.out.println("Base Entropy : " + baseEntropy);
+        System.out.println();
+
         for (int a : attribsToCheck) {
             double infoGain = getInformationGainForAttrib(examples, a, baseEntropy);
+
+            System.out.println("Information Gain for Attribute " + a + " : " + infoGain);
+
             if (infoGain > bestInfoGain) {
                 bestInfoGain = infoGain;
                 bestAttribID = a;
             }
         }
+
+        System.out.println();
 
         return bestAttribID;
     }
@@ -225,6 +247,9 @@ class BinaryDTBuilder {
         ArrayList<Example> examples = fileIO.readFile("./data/xor.txt");
         BinaryDTBuilder bdtb = new BinaryDTBuilder(examples);
         ArrayList<Node> tree = bdtb.buildAndGetTree();
+
+        System.out.println("//////// Final Tree");
+        System.out.println();
 
         for (Node n : tree) {
             System.out.print(n.toString());
