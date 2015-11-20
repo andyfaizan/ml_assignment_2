@@ -12,6 +12,10 @@ public class Main {
         String filepath1 = "./data/SPECT.train";
         String filepath2 = "./data/SPECT.test";
 
+        spect(filepath1, filepath2, "./output/", "SPECT-", ".tree");
+    }
+
+    private static void spect(String filepath1, String filepath2, String outDir, String outFilePrefix, String outFilePostfix) {
         FileIO fileIO = new FileIO();
         Examples examples = fileIO.readFile(filepath1);
         Examples examples1 = fileIO.readFile(filepath2);
@@ -20,14 +24,23 @@ public class Main {
         examples1.getExamplesList().forEach(examples::add);
 
         // run 10 iterations of 3 fold cross validation
-        KFoldCrossValidation kf = new KFoldCrossValidation(examples, 3);
+        int k = 3;
+        KFoldCrossValidation kf = new KFoldCrossValidation(examples, k);
+
+        int nIterations = 10;
 
         ArrayList<Double> accuracyList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            accuracyList.add(kf.getPredictionAccuracy());
+
+        String outFilePath = "";
+        if (outDir != "") {
+            outFilePath += outDir + outFilePrefix;
+        }
+
+        for (int i = 0; i < nIterations; i++) {
+            accuracyList.add(kf.getPredictionAccuracy(outFilePath + (i + 1) + outFilePostfix));
         }
         System.out.println();
-        System.out.println("######## Accuracy of Prediction");
+        System.out.println("######## Accuracy of Prediction for " + nIterations + " iterations of " + k + " fold cross validation");
         System.out.println();
 
         // calculate metrics for accuracy
@@ -37,7 +50,8 @@ public class Main {
         int i = 1;
 
         for (double accu : accuracyList) {
-            System.out.print(accu);
+            if (i < 10) { System.out.print("0"); }
+            System.out.print("" + i + ". " + accu);
             if (accu == minAccuracy) {
                 System.out.print("  <-- min\n");
             } else if (accu == maxAccuracy) {
@@ -50,5 +64,10 @@ public class Main {
         }
         System.out.println();
         System.out.println("" + meanAccuracy + "  <-- mean");
+
+        if (outDir != "") {
+            System.out.println();
+            System.out.println("Output trees have been saved as " + outFilePath + "*" + outFilePostfix);
+        }
     }
 }

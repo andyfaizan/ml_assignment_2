@@ -37,20 +37,20 @@ class FileIO {
     /*
     Untested function
      */
-    public void writeFile(ArrayList<Node> nodes, String outFilePath) {
+    public void writeFile(Tree tree, String outFilePath) {
 
         try {
             File outFile = new File(outFilePath);
 
             if (!outFile.exists()) {
                 outFile.createNewFile();
+            } else {
+                outFile.delete();
             }
 
-            FileWriter fileWriter = new FileWriter(outFile.getName(), true);
+            FileWriter fileWriter = new FileWriter(outFile, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for (Node node : nodes) {
-                bufferedWriter.write(node.toString());
-            }
+            bufferedWriter.write(tree.toString());
             bufferedWriter.close();
 
         } catch (IOException e) {
@@ -64,9 +64,8 @@ class FileIO {
     public static void main(String[] args) {
         FileIO fileIO = new FileIO();
         Examples values = fileIO.readFile("./data/xor.txt");
-        for (Example e : values.getExamplesList()) {
-            System.out.print(e.toString());
-        }
-        System.out.println();
+
+        Tree tree = new BinaryDTBuilder(values).buildAndGetTree();
+        fileIO.writeFile(tree, "./output/tree.txt");
     }
 }

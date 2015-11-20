@@ -46,7 +46,7 @@ public class KFoldCrossValidation {
         return examplesArrayList;
     }
 
-    public double getPredictionAccuracy() {
+    public double getPredictionAccuracy(String filepathToSaveTree) {
         ArrayList<Examples> examplesArrayList = shuffleAndGetTrainTestExamples();
         Examples trainExamples = examplesArrayList.get(0);
         Examples testExamples = examplesArrayList.get(1);
@@ -54,6 +54,11 @@ public class KFoldCrossValidation {
         // Build a decision tree
         BinaryDTBuilder bdtb = new BinaryDTBuilder(trainExamples);
         Tree tree = bdtb.buildAndGetTree();
+
+        if (filepathToSaveTree != "") {
+            FileIO fileIO = new FileIO();
+            fileIO.writeFile(tree, filepathToSaveTree);
+        }
 
         // Test accuracy of the tree
         ArrayList<Boolean> testLabels = testExamples.getAllLabels();
