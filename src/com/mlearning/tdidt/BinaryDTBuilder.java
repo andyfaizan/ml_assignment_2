@@ -11,7 +11,7 @@ class BinaryDTBuilder {
     private Tree tree;
     private int maxNodeId = -1;  // TODO: Make a static var in Node.class?
 
-    private BinaryDTBuilder(Examples examples) {
+    public BinaryDTBuilder(Examples examples) {
         this.examples = examples;
     }
 

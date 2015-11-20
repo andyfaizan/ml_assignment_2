@@ -42,4 +42,8 @@ class Example {
         s += "\n";
         return s;
     }
+
+    public ArrayList<Boolean> getAttributes() {
+        return this.attributes;
+    }
 }

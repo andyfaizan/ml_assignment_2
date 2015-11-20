@@ -62,4 +62,13 @@ class Examples {
     public int size(){
         return this.examples.size();
     }
+
+    public ArrayList<ArrayList<Boolean>> getAllAttributes() {
+        ArrayList<ArrayList<Boolean>> attributesList = new ArrayList<>();
+        for (Example e : this.examples) {
+            attributesList.add(e.getAttributes());
+        }
+
+        return attributesList;
+    }
 }
