@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  */
 class Tree {
-    ArrayList<Node> nodes;
+    private final ArrayList<Node> nodes;
 
     public Tree() {
         this.nodes = new ArrayList<>();
@@ -15,10 +15,6 @@ class Tree {
 
     public void add(Node node){
         this.nodes.add(node);
-    }
-
-    public ArrayList<Node> getNodes() {
-        return this.nodes;
     }
 
     public String toString() {
@@ -29,11 +25,11 @@ class Tree {
         return s;
     }
 
-    public Node getRootNode() {
+    private Node getRootNode() {
         return getNodeByID(0);
     }
 
-    public Node getNodeByID(int id) {
+    private Node getNodeByID(int id) {
         for (Node n : this.nodes) {
             if (n.getId() == id) {
                 return n;

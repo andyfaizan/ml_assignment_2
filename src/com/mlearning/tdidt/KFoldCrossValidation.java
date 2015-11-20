@@ -7,27 +7,22 @@ import java.util.Collections;
  * Created by @motjuste on 20/11/15.
  *
  */
-public class KFoldCrossValidation {
-    private Examples examples;
+class KFoldCrossValidation {
+    private final Examples examples;
     private int K = 3;
-
-
-    public KFoldCrossValidation(Examples examples) {
-        this.examples = examples;
-    }
 
     public KFoldCrossValidation(Examples examples, int K) {
         this.examples = examples;
         this.K = K;
     }
 
-    public ArrayList<Examples> shuffleAndGetTrainTestExamples(){
+    private ArrayList<Examples> shuffleAndGetTrainTestExamples(){
         ArrayList<Integer> indices = new ArrayList<>();
         for (int i = 0; i < examples.size(); i++) {
             indices.add(i);
         }
         Collections.shuffle(indices);
-        int testSize = examples.size() / 3;
+        int testSize = examples.size() / this.K;
 
         Examples testExamples = new Examples();
         for (int i = 0; i < testSize; i++) {
@@ -55,7 +50,7 @@ public class KFoldCrossValidation {
         BinaryDTBuilder bdtb = new BinaryDTBuilder(trainExamples);
         Tree tree = bdtb.buildAndGetTree();
 
-        if (filepathToSaveTree != "") {
+        if (!filepathToSaveTree.equals("")) {
             FileIO fileIO = new FileIO();
             fileIO.writeFile(tree, filepathToSaveTree);
         }

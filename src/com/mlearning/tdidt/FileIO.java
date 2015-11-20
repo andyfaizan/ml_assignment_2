@@ -57,15 +57,4 @@ class FileIO {
             e.printStackTrace();
         }
     }
-
-    /*
-    For testing read file
-     */
-    public static void main(String[] args) {
-        FileIO fileIO = new FileIO();
-        Examples values = fileIO.readFile("./data/xor.txt");
-
-        Tree tree = new BinaryDTBuilder(values).buildAndGetTree();
-        fileIO.writeFile(tree, "./output/tree.txt");
-    }
 }

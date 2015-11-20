@@ -1,6 +1,7 @@
 package com.mlearning.tdidt;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Created by @motjuste on 20/11/15.
@@ -25,11 +26,7 @@ class BinaryDTBuilder {
         return this.tree;
     }
 
-    public Tree getTree(){
-        return this.tree;
-    }
-
-    public void buildTree() {
+    private void buildTree() {
         ArrayList<Integer> attributes = new ArrayList<>();
         int nAttributes = examples.get(0).getnAttributes();
         for (int a = 0; a < nAttributes; a++) {
@@ -100,12 +97,7 @@ class BinaryDTBuilder {
         }
 
         // remove this attribute for next recursion
-        ArrayList<Integer> newAttributesToCheck = new ArrayList<>();
-        for (int a : attributesToCheck) {
-            if (a != bestAttributeID) {
-                newAttributesToCheck.add(a);
-            }
-        }
+        ArrayList<Integer> newAttributesToCheck = attributesToCheck.stream().filter(a -> a != bestAttributeID).collect(Collectors.toCollection(ArrayList::new));
 
         nodeToCheckFor.setTestAttributeID(bestAttributeID);
 

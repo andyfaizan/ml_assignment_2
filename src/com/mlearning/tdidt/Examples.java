@@ -7,9 +7,9 @@ import java.util.ArrayList;
  *
  */
 class Examples {
-    private ArrayList<Example> examples;
+    private final ArrayList<Example> examples;
 
-    public Examples(ArrayList<Example> examples) {
+    private Examples(ArrayList<Example> examples) {
         this.examples = examples;
     }
 

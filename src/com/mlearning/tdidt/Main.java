@@ -7,7 +7,7 @@ import java.util.Collections;
  * Created by @motjuste on 20/11/15.
  *
  */
-public class Main {
+class Main {
     public static void main(String[] args) {
         String filepath1 = "./data/SPECT.train";
         String filepath2 = "./data/SPECT.test";
@@ -29,7 +29,7 @@ public class Main {
         ArrayList<Double> accuracyList = new ArrayList<>();
 
         String outFilePath = "";
-        if (outDir != "") {
+        if (!outDir.equals("")) {
             outFilePath += outDir + outFilePrefix;
         }
 
@@ -62,7 +62,7 @@ public class Main {
         System.out.println();
         System.out.println("" + meanAccuracy + "  <-- mean");
 
-        if (outDir != "") {
+        if (!outDir.equals("")) {
             System.out.println();
             System.out.println("Output trees have been saved as " + outFilePath + "*" + outFilePostfix);
         }
