@@ -57,4 +57,25 @@ class FileIO {
             e.printStackTrace();
         }
     }
+
+    public void writeFile(Examples examples, String outFilePath) {
+
+        try {
+            File outFile = new File(outFilePath);
+
+            if (!outFile.exists()) {
+                outFile.createNewFile();
+            } else {
+                outFile.delete();
+            }
+
+            FileWriter fileWriter = new FileWriter(outFile, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(examples.toString());
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

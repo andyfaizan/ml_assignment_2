@@ -174,6 +174,10 @@ class BinaryDTBuilder {
 
         double posProb = (double) posValCount / totalCount;
         double negProb = (double) negValCount / totalCount;
+        if (totalCount == 0) {
+            posProb = 0.0;
+            negProb = 0.0;
+        }
 
         return (-1.0 * posProb) * log2(posProb) + (-1.0 * negProb) * log2(negProb);
     }

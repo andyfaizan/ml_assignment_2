@@ -35,11 +35,10 @@ class Example {
     @Override
     public String toString() {
         String s = "";
-        if (this.label) { s += "1 "; } else { s += "0 "; }
+        if (this.label) { s += "1"; } else { s += "0"; }
         for (boolean a : this.attributes) {
-            if (a) { s += "1 "; } else { s+= "0 "; }
+            if (a) { s += ",1"; } else { s+= ",0"; }
         }
-        s += "\n";
         return s;
     }
 

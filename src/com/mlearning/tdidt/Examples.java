@@ -71,4 +71,16 @@ class Examples {
 
         return attributesList;
     }
+
+    @Override
+    public String toString() {
+        String s = "";
+        s += this.examples.get(0).getnAttributes() + "\r\n";
+
+        for (Example e: this.examples) {
+            s += e.toString() + "\r\n";
+        }
+
+        return s;
+    }
 }

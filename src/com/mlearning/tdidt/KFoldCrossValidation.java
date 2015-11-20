@@ -1,5 +1,6 @@
 package com.mlearning.tdidt;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -21,12 +22,15 @@ class KFoldCrossValidation {
         Examples trainExamples = examplesArrayList.get(0);
         Examples testExamples = examplesArrayList.get(1);
 
+        FileIO fileIO = new FileIO();
+        fileIO.writeFile(trainExamples, "./output/trainExamples.data");
+        fileIO.writeFile(testExamples, "./output/testExamples.data");
+
         // Build a decision tree
         BinaryDTBuilder bdtb = new BinaryDTBuilder(trainExamples);
         Tree tree = bdtb.buildAndGetTree();
 
         if (!filepathToSaveTree.equals("")) {
-            FileIO fileIO = new FileIO();
             fileIO.writeFile(tree, filepathToSaveTree);
         }
 
