@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by andyfaizan on 17/11/15.
  *
  */
-public class FileIO {
+class FileIO {
 
     public ArrayList<Example> readFile(String filePath) {
         ArrayList<Example> examples = new ArrayList<>();

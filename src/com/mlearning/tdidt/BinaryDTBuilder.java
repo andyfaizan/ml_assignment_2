@@ -6,21 +6,21 @@ import java.util.ArrayList;
  * Created by @motjuste on 20/11/15.
  *
  */
-public class BinaryDTBuilder {
-    private ArrayList<Example> examples;
+class BinaryDTBuilder {
+    private final ArrayList<Example> examples;
     private ArrayList<Node> tree;
     private int maxNodeId = -1;
 
-    public BinaryDTBuilder(ArrayList<Example> examples) {
+    private BinaryDTBuilder(ArrayList<Example> examples) {
         this.examples = examples;
     }
 
-    public int getNewNodeId() {
+    private int getNewNodeId() {
         maxNodeId++;
         return maxNodeId;
     }
 
-    public ArrayList<Node> buildAndGetTree() {
+    private ArrayList<Node> buildAndGetTree() {
         buildTree();
         return this.tree;
     }
@@ -42,7 +42,7 @@ public class BinaryDTBuilder {
         TDIDT(examples, attributes, rootNode);
     }
 
-    private void TDIDT(ArrayList<Example> examples, ArrayList<Integer> attribsToCheck, Node nodeToCheckFor) {
+    private void TDIDT(ArrayList<Example> examples, ArrayList<Integer> attributesToCheck, Node nodeToCheckFor) {
         // Check if class labels are the same for the examples
         ArrayList<Boolean> labelsList = getAllLabels(examples);
         if(allValuesSame(labelsList)) {
@@ -53,7 +53,7 @@ public class BinaryDTBuilder {
 
         // Check if any attribute splits data
         boolean splitAvailable = false;
-        for (int a : attribsToCheck) {
+        for (int a : attributesToCheck) {
             if (!allValuesSame(getValsForAttrib(examples, a))) {
                 splitAvailable = true;
                 break;
@@ -73,24 +73,24 @@ public class BinaryDTBuilder {
         }
 
         // select best attribute to test for the node based on Information Gain
-        int bestAttribID = getAttribWithMaxInfoGain(examples, attribsToCheck);
+        int bestAttributeID = getAttribWithMaxInfoGain(examples, attributesToCheck);
 
-        // remove this attibute for next recursion
-        ArrayList<Integer> newAttribsToCheck = new ArrayList<>();
-        for (int a : attribsToCheck) {
-            if (a != bestAttribID) {
-                newAttribsToCheck.add(a);
+        // remove this attribute for next recursion
+        ArrayList<Integer> newAttributesToCheck = new ArrayList<>();
+        for (int a : attributesToCheck) {
+            if (a != bestAttributeID) {
+                newAttributesToCheck.add(a);
             }
         }
 
-        nodeToCheckFor.setTestAttrib(bestAttribID);
+        nodeToCheckFor.setTestAttrib(bestAttributeID);
 
-        ArrayList<Boolean> possibleVals = new ArrayList<>();
-        possibleVals.add(false);
-        possibleVals.add(true);
+        ArrayList<Boolean> possibleValues = new ArrayList<>();
+        possibleValues.add(false);
+        possibleValues.add(true);
 
-        for (boolean v : possibleVals) {
-            ArrayList<Example> examplesSubList = getSublistForAttribValue(examples, bestAttribID, v);
+        for (boolean v : possibleValues) {
+            ArrayList<Example> examplesSubList = getSublistForAttribValue(examples, bestAttributeID, v);
             if (examplesSubList.size() > 0) {
                 Node childNode = new Node();
                 childNode.setId(getNewNodeId());
@@ -99,7 +99,7 @@ public class BinaryDTBuilder {
                 this.tree.add(childNode);
 
                 nodeToCheckFor.setChildForValue(childNode.getId(), v);
-                TDIDT(examplesSubList, newAttribsToCheck, childNode);
+                TDIDT(examplesSubList, newAttributesToCheck, childNode);
             }
         }
 

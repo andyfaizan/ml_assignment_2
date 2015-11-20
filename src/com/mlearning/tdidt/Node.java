@@ -4,7 +4,7 @@ package com.mlearning.tdidt;
  * Created by andyfaizan on 17/11/15.
  *
  */
-public class Node {
+class Node {
 
     private int id;
     private boolean parentsTest;
@@ -33,44 +33,20 @@ public class Node {
         this.id = id;
     }
 
-    public boolean isParentsTest() {
-        return parentsTest;
-    }
-
     public void setParentsTest(boolean parentsTest) {
         this.parentsTest = parentsTest;
-    }
-
-    public int getTestAttrib() {
-        return testAttrib;
     }
 
     public void setTestAttrib(int testAttrib) {
         this.testAttrib = testAttrib;
     }
 
-    public int getLeftChild() {
-        return leftChild;
-    }
-
-    public void setLeftChild(int leftChild) {
+    private void setLeftChild(int leftChild) {
         this.leftChild = leftChild;
     }
 
-    public int getRightChild() {
-        return rightChild;
-    }
-
-    public void setRightChild(int rightChild) {
+    private void setRightChild(int rightChild) {
         this.rightChild = rightChild;
-    }
-
-    public boolean isLeafNode() {
-        return isLeafNode;
-    }
-
-    public void setLeafNode(boolean leafNode) {
-        isLeafNode = leafNode;
     }
 
     public void setLeafClass(boolean leafClass) {
