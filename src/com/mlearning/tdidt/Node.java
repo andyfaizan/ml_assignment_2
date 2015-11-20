@@ -81,4 +81,24 @@ class Node {
     public void setAsLeaf() {
         this.isLeafNode = true;
     }
+
+    public boolean isLeafNode() {
+        return this.isLeafNode;
+    }
+
+    public int getTestAttrib() {
+        return this.testAttrib;
+    }
+
+    public int getChildForAttributeValue(Boolean attributeValue) {
+        if (attributeValue) {
+            return this.rightChild;
+        } else {
+            return this.leftChild;
+        }
+    }
+
+    public boolean getLeafClass() {
+        return this.leafClass;
+    }
 }

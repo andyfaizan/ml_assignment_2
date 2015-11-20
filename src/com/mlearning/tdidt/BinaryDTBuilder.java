@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 class BinaryDTBuilder {
     private final Examples examples;
-    private ArrayList<Node> tree;
-    private int maxNodeId = -1;
+    private Tree tree;
+    private int maxNodeId = -1;  // TODO: Make a static var in Node.class?
 
     private BinaryDTBuilder(Examples examples) {
         this.examples = examples;
@@ -20,12 +20,16 @@ class BinaryDTBuilder {
         return maxNodeId;
     }
 
-    private ArrayList<Node> buildAndGetTree() {
+    public Tree buildAndGetTree() {
         buildTree();
         return this.tree;
     }
 
-    private void buildTree() {
+    public Tree getTree(){
+        return this.tree;
+    }
+
+    public void buildTree() {
         ArrayList<Integer> attributes = new ArrayList<>();
         int nAttributes = examples.get(0).getnAttributes();
         for (int a = 0; a < nAttributes; a++) {
@@ -36,7 +40,7 @@ class BinaryDTBuilder {
         rootNode.setAsRoot();
         rootNode.setId(getNewNodeId());
 
-        this.tree = new ArrayList<>();
+        this.tree = new Tree();
         this.tree.add(rootNode);
 
         TDIDT(examples, attributes, rootNode);
@@ -215,13 +219,22 @@ class BinaryDTBuilder {
         // TODO: Check args and get filename
         Examples examples = fileIO.readFile("./data/xor.txt");
         BinaryDTBuilder bdtb = new BinaryDTBuilder(examples);
-        ArrayList<Node> tree = bdtb.buildAndGetTree();
+        Tree tree = bdtb.buildAndGetTree();
 
         System.out.println("//////// Final Tree (Depth First)");
         System.out.println();
+        System.out.print(tree);
 
-        for (Node n : tree) {
-            System.out.print(n.toString());
-        }
+        System.out.println();
+        System.out.println("//////// Test prediction for 1, 0");
+        ArrayList<Boolean> attr = new ArrayList<>();
+        attr.add(true);
+        attr.add(false);
+        String s = "";
+        if(tree.predictLabel(attr)) { s+= "1"; } else { s+="0"; }
+
+        System.out.println();
+        System.out.println("     Truth : 1 ");
+        System.out.println("Prediction : " + s);
     }
 }
