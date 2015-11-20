@@ -16,33 +16,8 @@ class KFoldCrossValidation {
         this.K = K;
     }
 
-    private ArrayList<Examples> shuffleAndGetTrainTestExamples(){
-        ArrayList<Integer> indices = new ArrayList<>();
-        for (int i = 0; i < examples.size(); i++) {
-            indices.add(i);
-        }
-        Collections.shuffle(indices);
-        int testSize = examples.size() / this.K;
-
-        Examples testExamples = new Examples();
-        for (int i = 0; i < testSize; i++) {
-            testExamples.add(examples.get(indices.get(i)));
-        }
-
-        Examples trainExamples = new Examples();
-        for (int i = testSize; i < examples.size(); i++) {
-            trainExamples.add(examples.get(indices.get(i)));
-        }
-
-        ArrayList<Examples> examplesArrayList = new ArrayList<>();
-        examplesArrayList.add(trainExamples);
-        examplesArrayList.add(testExamples);
-
-        return examplesArrayList;
-    }
-
     public double getPredictionAccuracy(String filepathToSaveTree) {
-        ArrayList<Examples> examplesArrayList = shuffleAndGetTrainTestExamples();
+        ArrayList<Examples> examplesArrayList = this.shuffleAndGetTrainTestExamples();
         Examples trainExamples = examplesArrayList.get(0);
         Examples testExamples = examplesArrayList.get(1);
 
@@ -71,4 +46,31 @@ class KFoldCrossValidation {
         return (double) truePositives / testSize;
 
     }
+
+    private ArrayList<Examples> shuffleAndGetTrainTestExamples(){
+        ArrayList<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < examples.size(); i++) {
+            indices.add(i);
+        }
+        Collections.shuffle(indices);
+        int testSize = examples.size() / this.K;
+
+        Examples testExamples = new Examples();
+        for (int i = 0; i < testSize; i++) {
+            testExamples.add(examples.get(indices.get(i)));
+        }
+
+        Examples trainExamples = new Examples();
+        for (int i = testSize; i < examples.size(); i++) {
+            trainExamples.add(examples.get(indices.get(i)));
+        }
+
+        ArrayList<Examples> examplesArrayList = new ArrayList<>();
+        examplesArrayList.add(trainExamples);
+        examplesArrayList.add(testExamples);
+
+        return examplesArrayList;
+    }
+
+
 }

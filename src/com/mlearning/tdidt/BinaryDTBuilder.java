@@ -82,8 +82,7 @@ class BinaryDTBuilder {
         }
 
         // select best attribute to test for the node based on Information Gain
-
-
+        System.out.println();
         int bestAttributeID;
         if (attributesToCheck.size() == 1) {
             bestAttributeID = attributesToCheck.get(0);
@@ -96,7 +95,7 @@ class BinaryDTBuilder {
             System.out.println();
         }
 
-        // remove this attribute for next recursion
+        // remove the best attribute for next recursion
         ArrayList<Integer> newAttributesToCheck = attributesToCheck.stream().filter(a -> a != bestAttributeID).collect(Collectors.toCollection(ArrayList::new));
 
         nodeToCheckFor.setTestAttributeID(bestAttributeID);
@@ -115,6 +114,7 @@ class BinaryDTBuilder {
                 this.tree.add(childNode);
 
                 nodeToCheckFor.setChildForValue(childNode.getId(), v);
+
                 TDIDT(examplesSubList, newAttributesToCheck, childNode);
             }
         }
