@@ -9,8 +9,8 @@ class Node {
     private int id;
     private boolean parentsTest;
     private int testAttributeID;
-    private int leftChild;
-    private int rightChild;
+    private int leftChild = -1;
+    private int rightChild = -1;
     private boolean isLeafNode = false;
     private boolean leafClass;
     private boolean isRoot = false;
@@ -29,9 +29,20 @@ class Node {
         }
 
         if(isLeafNode) {
-            s += "- - " + leafClass;
+            s += "- - ";
+            if (leafClass) { s+= "yes"; } else { s+= "no"; }
         } else {
-            s += testAttributeID + " " + leftChild + " " + rightChild;
+            s += testAttributeID + " " ;
+            if (leftChild == -1) {
+                s += "!! ";
+            } else {
+                s += leftChild + " ";
+            }
+            if (rightChild == -1) {
+                s += "!! ";
+            } else {
+                s += rightChild;
+            }
         }
 
         return s + "\r\n";
