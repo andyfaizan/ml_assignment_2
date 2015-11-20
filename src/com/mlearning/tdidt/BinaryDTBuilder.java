@@ -248,7 +248,7 @@ class BinaryDTBuilder {
         BinaryDTBuilder bdtb = new BinaryDTBuilder(examples);
         ArrayList<Node> tree = bdtb.buildAndGetTree();
 
-        System.out.println("//////// Final Tree");
+        System.out.println("//////// Final Tree (Depth First)");
         System.out.println();
 
         for (Node n : tree) {

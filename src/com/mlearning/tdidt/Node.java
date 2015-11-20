@@ -17,12 +17,24 @@ class Node {
 
     @Override
     public String toString() {
-        String pTest = "no";
-        if(parentsTest){
-            pTest = "yes";
+        String s = "";
+        s += id + " ";
+
+        if(isRoot) {
+            s += "- ";
+        } else if(parentsTest){
+            s += "yes ";
+        } else {
+            s += "no ";
         }
-        return id + " " + pTest + " " + testAttrib +
-                " " + leftChild + " " + rightChild + "\r\n";
+
+        if(isLeafNode) {
+            s += "- - " + leafClass;
+        } else {
+            s += testAttrib + " " + leftChild + " " + rightChild;
+        }
+
+        return s + "\r\n";
     }
 
     public int getId() {
