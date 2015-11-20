@@ -12,10 +12,6 @@ public class Main {
         String filepath1 = "./data/SPECT.train";
         String filepath2 = "./data/SPECT.test";
 
-        spect(filepath1, filepath2, "./output/", "SPECT-", ".tree");
-    }
-
-    private static void spect(String filepath1, String filepath2, String outDir, String outFilePrefix, String outFilePostfix) {
         FileIO fileIO = new FileIO();
         Examples examples = fileIO.readFile(filepath1);
         Examples examples1 = fileIO.readFile(filepath2);
@@ -23,11 +19,12 @@ public class Main {
         // join the two sets of examples
         examples1.getExamplesList().forEach(examples::add);
 
-        // run 10 iterations of 3 fold cross validation
-        int k = 3;
-        KFoldCrossValidation kf = new KFoldCrossValidation(examples, k);
+        spect(examples, 3, 10, "./output/", "SPECT-", ".tree");
+    }
 
-        int nIterations = 10;
+    private static void spect(Examples examples, int kFolds, int nIterations, String outDir, String outFilePrefix, String outFilePostfix) {
+        // run nIterations of kfolds cross validation
+        KFoldCrossValidation kf = new KFoldCrossValidation(examples, kFolds);
 
         ArrayList<Double> accuracyList = new ArrayList<>();
 
@@ -40,7 +37,7 @@ public class Main {
             accuracyList.add(kf.getPredictionAccuracy(outFilePath + (i + 1) + outFilePostfix));
         }
         System.out.println();
-        System.out.println("######## Accuracy of Prediction for " + nIterations + " iterations of " + k + " fold cross validation");
+        System.out.println("######## Accuracy of Prediction for " + nIterations + " iterations of " + kFolds + " fold cross validation");
         System.out.println();
 
         // calculate metrics for accuracy
