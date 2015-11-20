@@ -44,6 +44,8 @@ class BinaryDTBuilder {
         this.tree.add(rootNode);
 
         TDIDT(examples, attributes, rootNode);
+        System.out.println();
+        System.out.println("Total number of nodes : " + (maxNodeId + 1));
     }
 
     private void TDIDT(Examples examples, ArrayList<Integer> attributesToCheck, Node nodeToCheckFor) {
@@ -52,6 +54,9 @@ class BinaryDTBuilder {
         if(allValuesSame(labelsList)) {
             nodeToCheckFor.setAsLeaf();
             nodeToCheckFor.setLeafClass(labelsList.get(0));
+            System.out.println();
+            System.out.println("Node " + nodeToCheckFor.getId() +
+                    " is a leaf node, for class label " + nodeToCheckFor.getLeafClass());
             return;
         }
 
@@ -73,6 +78,9 @@ class BinaryDTBuilder {
                 nodeToCheckFor.setLeafClass(false);
             }
 
+            System.out.println();
+            System.out.println("Node " + nodeToCheckFor.getId() +
+                    " is a leaf node, for class label " + nodeToCheckFor.getLeafClass());
             return;
         }
 
