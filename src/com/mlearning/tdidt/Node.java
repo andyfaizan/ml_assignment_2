@@ -8,7 +8,7 @@ class Node {
 
     private int id;
     private boolean parentsTest;
-    private int testAttrib;
+    private int testAttributeID;
     private int leftChild;
     private int rightChild;
     private boolean isLeafNode = false;
@@ -31,7 +31,7 @@ class Node {
         if(isLeafNode) {
             s += "- - " + leafClass;
         } else {
-            s += testAttrib + " " + leftChild + " " + rightChild;
+            s += testAttributeID + " " + leftChild + " " + rightChild;
         }
 
         return s + "\r\n";
@@ -49,8 +49,8 @@ class Node {
         this.parentsTest = parentsTest;
     }
 
-    public void setTestAttrib(int testAttrib) {
-        this.testAttrib = testAttrib;
+    public void setTestAttributeID(int testAttributeID) {
+        this.testAttributeID = testAttributeID;
     }
 
     private void setLeftChild(int leftChild) {
@@ -86,8 +86,8 @@ class Node {
         return this.isLeafNode;
     }
 
-    public int getTestAttrib() {
-        return this.testAttrib;
+    public int getTestAttributeID() {
+        return this.testAttributeID;
     }
 
     public int getChildForAttributeValue(Boolean attributeValue) {

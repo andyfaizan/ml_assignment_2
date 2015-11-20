@@ -46,7 +46,7 @@ class Tree {
     public boolean predictLabel(ArrayList<Boolean> attributes) {
         Node currentNode = getRootNode();
         while (!currentNode.isLeafNode()) {
-            int attributeToCheck = currentNode.getTestAttrib();
+            int attributeToCheck = currentNode.getTestAttributeID();
             currentNode = this.getNodeByID(currentNode.getChildForAttributeValue(attributes.get(attributeToCheck)));
         }
         return currentNode.getLeafClass();

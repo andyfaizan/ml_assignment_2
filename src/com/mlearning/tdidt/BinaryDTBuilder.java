@@ -99,7 +99,7 @@ class BinaryDTBuilder {
             }
         }
 
-        nodeToCheckFor.setTestAttrib(bestAttributeID);
+        nodeToCheckFor.setTestAttributeID(bestAttributeID);
 
         ArrayList<Boolean> possibleValues = new ArrayList<>();
         possibleValues.add(false);
