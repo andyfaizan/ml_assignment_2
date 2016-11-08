@@ -9,26 +9,26 @@ import java.util.Collections;
  */
 class Main {
     public static void main(String[] args) {
-//        String filepath1 = "./data/SPECT.train";
-//        String filepath2 = "./data/SPECT.test";
-//
-//        FileIO fileIO = new FileIO();
-//        Examples examples = fileIO.readFile(filepath1);
-//        Examples examples1 = fileIO.readFile(filepath2);
-//
-//        // join the two sets of examples
-//        examples1.getExamplesList().forEach(examples::add);
-//
-//        spect(examples, 3, 10, "./output/", "SPECT-", ".tree");
-
-        String fp = "/Users/myrmidon/Delve/studies-mi/ml-bonn/sheet-02/ml_assignment_2/data/kr-vs-kp.data.binarized";
+        String filepath1 = "./data/SPECT.train";
+        String filepath2 = "./data/SPECT.test";
 
         FileIO fileIO = new FileIO();
-        Examples examples = fileIO.readFile(fp);
-        BinaryDTBuilder btb = new BinaryDTBuilder(examples);
-//        Tree tree = btb.buildAndGetTree();
+        Examples examples = fileIO.readFile(filepath1);
+        Examples examples1 = fileIO.readFile(filepath2);
 
-        spect(examples, 3, 10, "./output/", "exercise-02-03", ".tree");
+        // join the two sets of examples
+        examples1.getExamplesList().forEach(examples::add);
+
+        spect(examples, 3, 10, "./output/", "SPECT-", ".tree");
+
+//        String fp = "/Users/myrmidon/Delve/studies-mi/ml-bonn/sheet-02/ml_assignment_2/data/kr-vs-kp.data.binarized";
+//
+//        FileIO fileIO = new FileIO();
+//        Examples examples = fileIO.readFile(fp);
+//        BinaryDTBuilder btb = new BinaryDTBuilder(examples);
+////        Tree tree = btb.buildAndGetTree();
+//
+//        spect(examples, 3, 10, "./output/", "exercise-02-03", ".tree");
 
     }
 
